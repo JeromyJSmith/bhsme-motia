@@ -1,0 +1,8 @@
+# API Steps Directory
+
+This directory contains API step implementations for the LlamaCloud + Motia integration.
+
+## Planned Files:
+- analyze-existing-code.step.ts
+- codebase-aware-research.step.ts
+- document-code-correlation.step.ts 

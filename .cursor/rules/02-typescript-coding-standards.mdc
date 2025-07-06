@@ -1,0 +1,293 @@
+---
+globs: *.ts,*.tsx,*.js,*.jsx
+---
+
+# TypeScript & Coding Standards
+
+## 📝 TypeScript Configuration
+
+Always follow the [tsconfig.json](mdc:tsconfig.json) settings:
+
+- **Strict mode** enabled
+- **ES2020** target with ESNext modules
+- **Node resolution** for compatibility
+- **JSX react-jsx** for React components
+
+## 🏗️ Code Structure Standards
+
+### Import Organization
+
+```typescript
+// 1. External libraries
+import { LlamaIndexCloudService } from "@llamaindex/cloud-sdk";
+import express from "express";
+
+// 2. Internal services and utilities
+import { LlamaCloudService } from "../services/llamacloud.service";
+import { validateInput } from "../utils/helpers";
+
+// 3. Types and interfaces
+import type { ApiRouteConfig, EventConfig } from "motia";
+import type { AnalysisRequest, DocumentResult } from "../types";
+```
+
+### Function and Variable Naming
+
+```typescript
+// Use descriptive camelCase
+const analyzeExistingCode = async (request: AnalysisRequest) => { ... };
+
+// Constants in UPPER_SNAKE_CASE
+const GSH_CODEBASE_INDEX = "gsh-codebase-index";
+const MAX_DOCUMENT_SIZE = 52428800; // 50MB
+
+// Interface names with descriptive prefixes
+interface AnalysisRequest {
+  analysisType: "integration" | "optimization" | "documentation";
+  focusArea: string;
+  includeCodeContext?: boolean;
+}
+```
+
+### Error Handling Patterns
+
+```typescript
+// Always wrap async operations
+export const handler = async (req: Request) => {
+    try {
+        const { analysisType, focusArea } = req.body;
+
+        const result = await llamaCloudService.queryIndex(
+            GSH_CODEBASE_INDEX,
+            `${focusArea} ${analysisType} requirements`,
+            10,
+        );
+
+        return {
+            status: 200,
+            body: { result, timestamp: new Date().toISOString() },
+        };
+    } catch (error) {
+        logger.error("Analysis failed", {
+            error: error.message,
+            req: req.body,
+        });
+        return {
+            status: 500,
+            body: { error: "Analysis processing failed" },
+        };
+    }
+};
+```
+
+## 🔧 Motia Step Standards
+
+### API Step Configuration
+
+```typescript
+import type { ApiRouteConfig, Handlers } from "motia";
+
+export const config: ApiRouteConfig = {
+    type: "api",
+    name: "AnalyzeExistingCode", // PascalCase, descriptive
+    path: "/codebase/analyze", // kebab-case URL paths
+    method: "POST",
+    emits: ["codebase.analysis.completed"], // dot notation topics
+    flows: ["document-analysis"], // kebab-case flow names
+    bodySchema: z.object({ // Always validate input
+        analysisType: z.enum(["integration", "optimization"]),
+        focusArea: z.string().min(1),
+        includeCodeContext: z.boolean().optional(),
+    }),
+};
+```
+
+### Event Step Configuration
+
+```typescript
+import type { EventConfig, Handlers } from "motia";
+
+export const config: EventConfig = {
+    type: "event",
+    name: "ProcessWithLlamaCloud",
+    subscribes: ["document.uploaded"],
+    emits: ["document.processed", "analysis.completed"],
+    flows: ["document-processing"],
+};
+```
+
+## 🚀 Service Layer Standards
+
+### Service Implementation Pattern
+
+```typescript
+// services/llamacloud.service.ts
+import { LlamaIndexCloudService } from "@llamaindex/cloud-sdk";
+
+export class LlamaCloudService {
+    private client: LlamaIndexCloudService;
+    private indexName: string;
+
+    constructor() {
+        this.client = new LlamaIndexCloudService({
+            apiKey: process.env.LLAMACLOUD_API_KEY!,
+            baseUrl: process.env.LLAMACLOUD_BASE_URL,
+        });
+        this.indexName = process.env.LLAMACLOUD_INDEX || "gsh-codebase-index";
+    }
+
+    async queryIndex(
+        query: string,
+        limit: number = 10,
+    ): Promise<DocumentResult[]> {
+        const results = await this.client.queryIndex(
+            this.indexName,
+            query,
+            limit,
+        );
+
+        return results.map((result) => ({
+            text: result.text,
+            score: result.score,
+            metadata: result.metadata,
+        }));
+    }
+}
+```
+
+## 🔍 Type Safety Requirements
+
+### Strict Type Definitions
+
+```typescript
+// types/index.ts
+export interface GSHDocument {
+    id: string;
+    filename: string;
+    content: string;
+    uploadedAt: Date;
+    processedAt?: Date;
+    documentType: "contract" | "schedule" | "executive-dashboard" | "scope";
+    metadata: {
+        size: number;
+        format: string;
+        checksum: string;
+    };
+}
+
+export interface AnalysisResult {
+    documentId: string;
+    insights: string[];
+    correlations: CodeDocumentCorrelation[];
+    implementationGaps: string[];
+    recommendations: string[];
+    confidence: number; // 0-1
+}
+
+export interface CodeDocumentCorrelation {
+    documentSection: string;
+    codeLocation: string;
+    correlationType: "requirement" | "implementation" | "gap";
+    confidence: number;
+}
+```
+
+### Environment Variable Types
+
+```typescript
+// types/env.d.ts
+declare namespace NodeJS {
+    interface ProcessEnv {
+        LLAMACLOUD_API_KEY: string;
+        OPENAI_API_KEY: string;
+        NEO4J_URL: string;
+        NEO4J_USERNAME: string;
+        NEO4J_PASSWORD: string;
+        NODE_ENV: "development" | "production" | "test";
+    }
+}
+```
+
+## 📊 Code Quality Standards
+
+### Documentation Requirements
+
+````typescript
+/**
+ * Analyzes existing codebase using LlamaCloud integration
+ *
+ * @param analysisType - Type of analysis to perform
+ * @param focusArea - Specific area to focus analysis on
+ * @param includeCodeContext - Whether to include existing code context
+ * @returns Analysis results with recommendations and correlations
+ *
+ * @example
+ * ```typescript
+ * const result = await analyzeCodebase({
+ *   analysisType: "integration",
+ *   focusArea: "motia-llamacloud",
+ *   includeCodeContext: true
+ * });
+ * ```
+ */
+export async function analyzeCodebase(
+    request: AnalysisRequest,
+): Promise<AnalysisResult> {
+    // Implementation
+}
+````
+
+### Testing Standards
+
+```typescript
+// tests/services/llamacloud.service.test.ts
+import { beforeEach, describe, expect, it } from "vitest";
+import { LlamaCloudService } from "../src/services/llamacloud.service";
+
+describe("LlamaCloudService", () => {
+    let service: LlamaCloudService;
+
+    beforeEach(() => {
+        service = new LlamaCloudService();
+    });
+
+    it("should query index successfully", async () => {
+        const results = await service.queryIndex("test query", 5);
+
+        expect(results).toHaveLength(5);
+        expect(results[0]).toHaveProperty("text");
+        expect(results[0]).toHaveProperty("score");
+    });
+});
+```
+
+## ⚡ Performance Standards
+
+### Async/Await Best Practices
+
+```typescript
+// ✅ Good: Parallel processing
+const [codeContext, documents] = await Promise.all([
+    llamaCloud.queryIndex("code analysis", 10),
+    documentService.getGSHDocuments(),
+]);
+
+// ❌ Bad: Sequential processing
+const codeContext = await llamaCloud.queryIndex("code analysis", 10);
+const documents = await documentService.getGSHDocuments();
+```
+
+### Memory Management
+
+```typescript
+// ✅ Stream large documents
+import { createReadStream } from "fs";
+
+async function processLargeDocument(filePath: string) {
+    const stream = createReadStream(filePath);
+    // Process in chunks
+}
+
+// ❌ Don't load entire files into memory
+const content = await fs.readFile(filePath, "utf-8"); // Avoid for large files
+```

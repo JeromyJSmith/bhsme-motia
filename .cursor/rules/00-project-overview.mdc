@@ -1,0 +1,79 @@
+---
+alwaysApply: true
+---
+
+# GSH LlamaCloud + Motia Integration Project Overview
+
+## 🎯 Project Mission
+
+This project integrates **LlamaCloud** with **Motia** to create an intelligent
+**GSH (Good Samaritan Hospital)** behavioral health document analysis and
+workflow automation system.
+
+## 🏥 Healthcare Context
+
+- **Domain**: Behavioral Health Services Management
+- **Client**: Good Samaritan Hospital (GSH)
+- **Compliance**: HIPAA-compliant data handling required
+- **Sensitivity**: Healthcare data requires heightened security measures
+
+## 🏗️ Core Architecture Stack
+
+- **Workflow Engine**: [Motia](https://www.motia.dev) - Event-driven TypeScript
+  framework
+- **AI/Document Processing**: [LlamaCloud](https://cloud.llamaindex.ai) -
+  Enterprise document analysis
+- **Graph Database**: [Neo4j](mdc:docker-compose.yml) with MCP integration
+- **Task Management**: [Task system](mdc:tasks/README.md) with 4-phase
+  implementation
+- **Containerization**: Docker for Neo4j and MCP servers
+
+## 📋 Current Project Status
+
+- ✅ **Complete codebase analysis**: [repomix-output.md](mdc:repomix-output.md)
+  (318KB)
+- ✅ **Task documentation**: Comprehensive 4-phase plan in [tasks/](mdc:tasks/)
+- ✅ **Infrastructure setup**: Neo4j, MCP servers, Docker configuration
+- 🔄 **Phase 1 Ready**: Foundation setup for LlamaCloud integration
+
+## 🎯 Primary Objectives
+
+1. **Document Intelligence**: Process GSH behavioral health documents using
+   LlamaCloud
+2. **Code-Document Correlation**: Link existing codebase with project
+   requirements
+3. **Workflow Automation**: Create Motia-powered analysis and reporting
+   workflows
+4. **Knowledge Management**: Store insights in Neo4j graph database
+5. **Gap Analysis**: Identify implementation gaps and generate recommendations
+
+## 📊 Key Success Metrics
+
+- Integration of 318KB codebase with LlamaCloud indexing
+- Processing of [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) healthcare
+  documents
+- Automated workflow generation for document analysis
+- Real-time insights and recommendation system
+
+## 🚀 Development Approach
+
+All agents and developers must follow these **CRITICAL requirements**:
+
+### **MANDATORY: CONTEXT7 Documentation Check**
+
+- Before implementing ANY code, agents MUST query CONTEXT7 MCP tool for latest
+  documentation
+- Use current patterns and examples, never outdated training data
+- See
+  [CONTEXT7 Documentation Rule](mdc:.cursor/rules/05-context7-documentation.mdc)
+
+### **4-Phase Implementation Plan**:
+
+- **Phase 1**: Foundation Setup (LlamaCloud integration)
+- **Phase 2**: Core Integration (API development)
+- **Phase 3**: Document Integration (GSH docs processing)
+- **Phase 4**: Advanced Features (automation & optimization)
+
+Reference
+[tasks/llamacloud-motia-integration.md](mdc:tasks/llamacloud-motia-integration.md)
+for detailed specifications.

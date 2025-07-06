@@ -1,0 +1,169 @@
+---
+alwaysApply: false
+---
+
+# Architecture & Technology Standards
+
+## 🏗️ Motia Framework Architecture
+
+### Workflow Patterns
+
+- **Event-Driven**: All communication via topics (e.g., `document.uploaded`,
+  `analysis.completed`)
+- **Step-Based**: Organize functionality into discrete steps in
+  [steps/](mdc:steps/)
+- **Flow Organization**: Group related steps into flows for visual debugging
+- **State Management**: Use `traceId` for isolation and workflow tracking
+
+### Step Types & Organization
+
+```typescript
+// API Steps: HTTP endpoints
+export const config: ApiRouteConfig = {
+  type: "api",
+  path: "/analyze",
+  method: "POST",
+  emits: ["document.received"],
+  flows: ["document-analysis"],
+};
+
+// Event Steps: Process events, emit to new topics
+export const config: EventConfig = {
+  type: "event",
+  subscribes: ["document.uploaded"],
+  emits: ["analysis.completed"],
+  flows: ["document-processing"],
+};
+```
+
+### Directory Structure Standards
+
+```
+steps/
+├── api-steps/          # HTTP endpoints
+├── event-steps/       # Event processors
+├── cron-steps/        # Scheduled tasks
+└── noop-steps/        # Manual triggers & connectors
+```
+
+## 🔗 Integration Architecture
+
+### Neo4j Integration via MCP
+
+- **Primary Database**: [Neo4j](mdc:docker-compose.yml) on
+  `bolt://localhost:7687`
+- **MCP Servers**: Use [mcp-neo4j/](mdc:mcp-neo4j/) implementations
+  - `mcp-neo4j-memory`: Knowledge graph memory management
+  - `mcp-neo4j-cypher`: Direct Cypher query execution
+  - `mcp-neo4j-data-modeling`: Schema design and validation
+
+### LlamaCloud Integration Standards
+
+- **API Key Management**: Store in environment variables only
+- **Document Processing**: Use codebase upload + GSH document correlation
+- **Index Strategy**: Create project-specific indexes (`gsh-codebase-index`)
+- **Query Patterns**: Implement codebase-aware research capabilities
+
+### Docker & MCP Standards
+
+- **Neo4j Container**: Use official Neo4j 5.16+ with APOC plugins
+- **MCP Servers**: Containerized for isolation and scalability
+- **Environment Variables**: Centralized configuration via
+  [docker-compose.yml](mdc:docker-compose.yml)
+
+## 📝 Code Organization Rules
+
+### File Naming Conventions
+
+```
+steps/api-steps/analyze-existing-code.step.ts
+steps/event-steps/process-with-llamacloud.step.ts
+services/llamacloud.service.ts
+types/index.ts
+```
+
+### TypeScript Standards
+
+- **Strict Mode**: Always use strict TypeScript configuration
+- **Type Safety**: Define interfaces for all data structures
+- **Import Organization**: Group imports by type (external, internal, types)
+- **Error Handling**: Wrap all async operations in try-catch blocks
+
+### Python Standards
+
+**CRITICAL**: When working with Python code, agents MUST use the existing
+environment:
+
+- **Virtual Environment**: Always use the existing `.venv` in the project root
+- **Package Manager**: Environment is managed with **UV** or **UVX** - never use
+  pip directly
+- **Activation**: Source the existing `.venv` before any Python operations
+- **Dependencies**: Use [pyproject.toml](mdc:pyproject.toml) and
+  [uv.lock](mdc:uv.lock) for dependency management
+
+```bash
+# ✅ REQUIRED: Use existing .venv with UV/UVX
+source .venv/bin/activate  # Activate existing environment
+uv pip install package    # Use UV for package management
+uvx tool-name             # Use UVX for tool execution
+
+# ❌ FORBIDDEN: Direct pip or creating new environments
+pip install package       # NEVER use pip directly
+python -m venv new_env    # NEVER create new environments
+conda install package    # NEVER use conda
+```
+
+### Topic Naming Convention
+
+```
+entity.action[.status]
+Examples:
+- document.uploaded
+- analysis.completed
+- error.processing.failed
+- workflow.step.started
+```
+
+## 🔐 Security Architecture
+
+### Healthcare Compliance (HIPAA)
+
+- **Data Encryption**: All data in transit and at rest
+- **Access Control**: Role-based access for all endpoints
+- **Audit Logging**: Track all document access and processing
+- **Data Minimization**: Process only necessary PHI data
+
+### API Security Standards
+
+- **Authentication**: Implement for all API endpoints
+- **Rate Limiting**: Prevent abuse of document processing
+- **Input Validation**: Validate all request bodies and parameters
+- **Secrets Management**: Use environment variables, never hardcode
+
+## 🚀 Development Workflow
+
+### Testing Standards
+
+```bash
+# Test API endpoints
+curl -X POST http://localhost:3000/api/endpoint
+
+# Test event emissions
+npx motia emit --topic test-event --message '{"key": "value"}'
+
+# Test Neo4j operations
+python verify_neo4j_connection.py
+```
+
+### Debugging Tools
+
+- **Motia Workbench**: Visual debugging at `http://localhost:3000`
+- **Neo4j Browser**: Database exploration at `http://localhost:7474`
+- **Docker Logs**: Monitor container health and performance
+
+### Performance Standards
+
+- **API Response Time**: < 2 seconds for document analysis
+- **Neo4j Queries**: Optimize for < 100ms response time
+- **LlamaCloud Queries**: Implement caching for repeated requests
+- **Memory Usage**: Monitor container resource consumption

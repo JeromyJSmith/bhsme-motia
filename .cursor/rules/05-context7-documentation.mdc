@@ -1,0 +1,126 @@
+# CONTEXT7 Documentation Requirement
+
+## 🔍 MANDATORY: Always Check Latest Documentation
+
+**CRITICAL RULE**: Before implementing any code, agents MUST query the CONTEXT7
+MCP tool to get the most recent, up-to-date documentation and examples.
+
+## 📚 Required CONTEXT7 Usage
+
+### Before Any Code Implementation
+
+1. **Query CONTEXT7 First**: Always search for current documentation
+2. **Validate Patterns**: Check for latest API patterns and best practices
+3. **Verify Examples**: Use current code examples, not outdated training data
+4. **Check Breaking Changes**: Identify any recent API or framework changes
+
+### CONTEXT7 Query Strategy
+
+```typescript
+// ✅ REQUIRED: Query CONTEXT7 before implementing
+// Example queries to run:
+
+// For LlamaCloud integration:
+"LlamaCloud API latest documentation upload files";
+"LlamaCloud TypeScript SDK current examples";
+"LlamaCloud index creation best practices 2024";
+
+// For Motia framework:
+"Motia event-driven step configuration latest";
+"Motia API route setup current syntax";
+"Motia workflow flows recent examples";
+
+// For Neo4j MCP:
+"Neo4j MCP server latest integration patterns";
+"mcp-neo4j-cypher current usage examples";
+"Neo4j Docker configuration recent updates";
+```
+
+## 🚫 Forbidden: Outdated Implementation
+
+**NEVER implement code without checking CONTEXT7 first:**
+
+```typescript
+// ❌ FORBIDDEN: Implementing without CONTEXT7 check
+export const handler = async (req: Request) => {
+    // Using potentially outdated patterns from training data
+    const llamaResponse = await oldAPIPattern();
+};
+
+// ✅ REQUIRED: After CONTEXT7 documentation check
+export const handler = async (req: Request) => {
+    // Using current patterns confirmed via CONTEXT7
+    const llamaResponse = await currentAPIPattern();
+};
+```
+
+## 📋 Implementation Checklist
+
+Before writing any code, verify:
+
+- [ ] **CONTEXT7 Queried**: Searched for latest documentation
+- [ ] **API Patterns Confirmed**: Verified current syntax and methods
+- [ ] **Examples Reviewed**: Checked recent implementation examples
+- [ ] **Dependencies Updated**: Confirmed latest package versions
+- [ ] **Breaking Changes**: Identified any recent API changes
+
+## 🎯 Specific Documentation Areas
+
+### LlamaCloud Integration
+
+- Query: `"LlamaCloud API documentation file upload index creation"`
+- Query: `"LlamaCloud TypeScript SDK latest methods"`
+- Query: `"LlamaCloud authentication patterns current"`
+
+### Motia Framework
+
+- Query: `"Motia step configuration latest syntax"`
+- Query: `"Motia event handling current patterns"`
+- Query: `"Motia API routes recent examples"`
+
+### Neo4j MCP Integration
+
+- Query: `"Neo4j MCP server integration latest"`
+- Query: `"mcp-neo4j-cypher usage examples current"`
+- Query: `"Neo4j Docker MCP setup recent"`
+
+### Healthcare/HIPAA Compliance
+
+- Query: `"HIPAA compliant data handling latest requirements"`
+- Query: `"Healthcare API security current standards"`
+- Query: `"PHI data encryption recent best practices"`
+
+## ⚠️ Error Handling for CONTEXT7
+
+If CONTEXT7 returns no results:
+
+1. **Log the gap**: Document missing context in implementation notes
+2. **Use fallback**: Proceed with well-established patterns only
+3. **Flag for review**: Mark implementation for technical review
+4. **Update CONTEXT7**: Suggest documentation additions
+
+```typescript
+// Handle CONTEXT7 gaps appropriately
+try {
+    const docs = await queryContext7("LlamaCloud latest API");
+    if (!docs || docs.length === 0) {
+        logger.warn("CONTEXT7_MISSING", { query: "LlamaCloud latest API" });
+        // Use well-established fallback patterns only
+    }
+} catch (error) {
+    logger.error("CONTEXT7_ERROR", { error, query });
+    // Proceed with caution using verified patterns
+}
+```
+
+## 🎯 Success Criteria
+
+Code implementation is only complete when:
+
+- ✅ CONTEXT7 documentation checked and applied
+- ✅ Latest API patterns verified and used
+- ✅ Current best practices implemented
+- ✅ Recent examples referenced and adapted
+- ✅ Breaking changes identified and addressed
+
+---
