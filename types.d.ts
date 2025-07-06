@@ -15,5 +15,7 @@ declare module 'motia' {
     'CheckStateChange': EventHandler<{ key: string; expected: string }, never>
     'SetStateChange': EventHandler<{ message: string }, { topic: 'check-state-change'; data: { key: string; expected: string } }>
     'ApiTrigger': ApiRouteHandler<{ message: string }, ApiResponse<200, { message: string; traceId: string }>, { topic: 'test-state'; data: { message: string } }>
+    'GSHDocumentQuery': ApiRouteHandler<{ query: string; documentType?: 'medical' | 'financial' | 'administrative' | 'regulatory' | 'all'; maxResults?: number; includeCodeContext?: boolean; complianceLevel?: 'HIPAA' | 'Healthcare' }, ApiResponse<200, { success: boolean; query: string; documentType: string; resultCount: number; totalResults: number; documents: unknown[]; complianceValidated: boolean; complianceLevel: string; timestamp: string; sessionId: string }> | ApiResponse<500, { success: boolean; error: string; details: string }>, never>
+    'CodebaseAwareResearch': ApiRouteHandler<{ query: string; includeCodeContext?: boolean; includeGSHDocuments?: boolean; documentType?: 'medical' | 'financial' | 'administrative' | 'regulatory' | 'all'; maxDocuments?: number; researchFocus?: 'integration' | 'compliance' | 'implementation' | 'architecture' | 'general' }, ApiResponse<200, { success: boolean; query: string; researchFocus: string; documentContextUsed: boolean; documentCount: number; recommendations: string[]; implementationSteps: string[] }> | ApiResponse<500, { success: boolean; error: string }>, never>
   }
 }

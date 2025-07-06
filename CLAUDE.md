@@ -1,203 +1,257 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+# CLAUDE.md - Project Analysis & Documentation
 
 ## Project Overview
 
-This is a hybrid TypeScript/Python project integrating **Motia** (event-driven workflow framework) with **Neo4j** (graph database) and **LlamaCloud** (AI-powered document analysis). The project is designed for GSH (Good Samaritan Hospital) document analysis and workflow automation.
+**Project Name:** bhsme-motia  
+**Type:** Healthcare Intelligence Platform  
+**Primary Purpose:** Good Samaritan Hospital (GSH) AI-powered document analysis and workflow automation system using LlamaIndex, Neo4j, and Motia framework.
 
-## Key Technologies
+## Architecture Summary
 
-- **Motia**: Event-driven workflow framework for TypeScript/JavaScript
-- **Neo4j**: Graph database with MCP (Model Context Protocol) integration
-- **LlamaCloud**: AI document analysis and indexing
-- **Docker**: Neo4j containerization
-- **Python**: Graph database operations and AI integrations
+This is a sophisticated healthcare intelligence platform that combines:
+- **Motia Framework** - Event-driven workflow orchestration
+- **LlamaIndex/LlamaCloud** - Document processing and RAG (Retrieval-Augmented Generation)
+- **Neo4j** - Graph database for memory and knowledge management
+- **MCP (Model Context Protocol)** - Standardized AI-database communication
+- **Python/TypeScript** - Multi-language implementation
 
-## Common Development Commands
+## Key Technologies & Dependencies
 
-### Start Development Server
-```bash
-npm run dev              # Start Motia development server with workbench
-npm run dev:debug        # Start with verbose logging
-```
+### Core Frameworks
+- **Motia** (v0.3.1-beta.87) - Primary workflow orchestration platform
+- **TypeScript** (v5.8.3) - Type-safe JavaScript development
+- **React** (v18.3.23) - Frontend UI components
+- **Zod** (v3.25.74) - Schema validation
 
-### Build and Clean
-```bash
-npm run build           # Build the project
-npm run clean           # Remove build artifacts and dependencies
-```
+### AI/ML Stack
+- **LlamaIndex** (v0.12.46) - Document indexing and retrieval
+- **LlamaCloud Services** (v0.6.41) - Cloud-based document processing
+- **OpenAI** (v1.93.0) - Language model integration
+- **Neo4j GraphRAG** (v1.8.0) - Graph-based RAG implementation
 
-### Database Operations
-```bash
-# Start Neo4j database
-docker-compose up -d neo4j
+### Database & Storage
+- **Neo4j** (v5.16) - Graph database with APOC plugin
+- **PostgreSQL** - Relational data storage
+- **Supabase** - Backend-as-a-service platform
 
-# Verify Neo4j connection
-python verify_neo4j_connection.py
-
-# Check Neo4j health
-docker-compose ps
-```
-
-### Testing
-```bash
-# Test API endpoints
-curl -X POST http://localhost:3000/api/endpoint -H "Content-Type: application/json" -d '{"data": "test"}'
-
-# Test event emissions
-npx motia emit --topic test-event --message '{"key": "value"}'
-```
-
-### Type Generation
-```bash
-npm run generate-types  # Generate TypeScript types for Motia steps
-```
+### Additional Capabilities
+- **Jupyter Notebooks** - Data analysis and experimentation
+- **Docker** - Containerization for Neo4j services
+- **MCP Servers** - Multiple specialized AI-database connectors
 
 ## Project Structure
 
-### Core Directories
-- `steps/`: Motia workflow steps (API, Event, Cron, NOOP)
-- `mcp-neo4j/`: Neo4j MCP server implementations
-- `tasks/`: Project task documentation and guides
-- `ALL-GOOD-SAM-DOCS/`: GSH project documentation and PDFs
-
-### Key Files
-- `main.py`: Python entry point for AI/graph operations
-- `docker-compose.yml`: Neo4j database setup
-- `verify_neo4j_connection.py`: Database connection testing
-- `types.d.ts`: Auto-generated TypeScript types
-- `tsconfig.json`: TypeScript configuration
-
-## Motia Framework Architecture
-
-### Step Types
-1. **API Steps**: HTTP endpoints (e.g., `/api/analyze`)
-2. **Event Steps**: Process events from topics, emit to new topics
-3. **Cron Steps**: Scheduled tasks
-4. **NOOP Steps**: Manual triggers and workflow connectors
-
-### Workflow Patterns
-- Steps communicate via **topics** (e.g., `document.uploaded`, `analysis.completed`)
-- Each step belongs to **flows** for organization
-- **State management** uses `traceId` for isolation
-- **Workbench** at `http://localhost:3000` for visual debugging
-
-### Example Step Structure
-```typescript
-// API Step
-export const config: ApiRouteConfig = {
-  type: 'api',
-  name: 'AnalyzeDocument',
-  path: '/analyze',
-  method: 'POST',
-  emits: ['document.received'],
-  flows: ['document-analysis'],
-  bodySchema: z.object({ documentId: z.string() })
-}
-
-export const handler: Handlers['AnalyzeDocument'] = async (req, { logger, emit, state, traceId }) => {
-  // Implementation
-}
+```
+bhsme-motia/
+├── main.py                    # Python entry point
+├── package.json              # Node.js dependencies
+├── pyproject.toml            # Python project configuration
+├── requirements.txt          # Python dependencies
+├── tsconfig.json             # TypeScript configuration
+├── docker-compose.yml        # Neo4j database setup
+├── rules.md                  # Development guidelines
+├── steps/                    # Motia workflow steps
+│   ├── api-steps/           # API endpoint handlers
+│   ├── 00-noop.step.ts      # Workflow connectors
+│   ├── 01-api.step.ts       # API triggers
+│   ├── 02-test-state.step.ts # State management
+│   └── 03-check-state-change.step.ts
+├── tasks/                    # Project management
+│   ├── README.md            # Task overview
+│   ├── TASK_TRACKER.md      # Progress tracking
+│   ├── QUICK_START_GUIDE.md # Implementation guide
+│   └── llamacloud-motia-integration.md
+├── mcp-neo4j/               # Model Context Protocol servers
+│   ├── servers/
+│   │   ├── mcp-neo4j-cypher/        # Cypher query generation
+│   │   ├── mcp-neo4j-memory/        # Knowledge graph memory
+│   │   ├── mcp-neo4j-data-modeling/ # Data model management
+│   │   └── mcp-neo4j-cloud-aura-api/ # Aura cloud management
+├── genai-workshop/          # AI/ML workshops and examples
+│   ├── customers-and-products/      # Retail GraphRAG example
+│   └── talent/                      # HR GraphRAG example
+├── types.d.ts               # Auto-generated type definitions
+└── verify_neo4j_connection.py # Database connectivity test
 ```
 
-## Neo4j Integration
+## Core Components
 
-### Database Schema
-- **Memory nodes**: Entities with names, types, and observations
-- **Relationships**: Typed connections between entities
-- **MCP Tools**: CRUD operations for graph management
+### 1. Workflow Engine (Motia)
+- **Event-driven architecture** with configurable steps
+- **API endpoints** for external integration
+- **State management** across workflow execution
+- **Flow orchestration** for complex business processes
 
-### Connection Details
-- **URL**: `bolt://localhost:7687`
-- **Credentials**: `neo4j/password`
-- **Ports**: 7474 (HTTP), 7687 (Bolt)
+### 2. Document Processing Pipeline
+- **LlamaCloud integration** for multi-format document parsing
+- **GraphRAG** for context-aware document retrieval
+- **Embeddings management** for semantic search
+- **Healthcare-specific** parsing instructions
 
-### MCP Servers
-- `mcp-neo4j-memory`: Knowledge graph memory management
-- `mcp-neo4j-cypher`: Direct Cypher query execution
-- `mcp-neo4j-data-modeling`: Schema design and validation
+### 3. Knowledge Graph (Neo4j)
+- **MCP-based** AI-database communication
+- **Memory persistence** across AI sessions
+- **Relationship mapping** between entities
+- **Cypher query generation** from natural language
 
-## LlamaCloud Integration
+### 4. AI Integration
+- **OpenAI GPT-4** for analysis and generation
+- **Context-aware research** combining documents and web sources
+- **Structured output** generation for reports
+- **Multi-modal processing** capabilities
 
-### Key Features
-- Document indexing and analysis
-- Code-document correlation
-- Integration recommendations
-- Codebase upload and querying
+## Development Workflow
 
-### Implementation Status
-- **Phase 1**: Foundation setup (API keys, codebase upload)
-- **Phase 2**: Core integration (API endpoints, analysis)
-- **Phase 3**: Document integration (GSH docs processing)
-- **Phase 4**: Advanced features (automation, optimization)
+### Phase-Based Implementation
+The project follows a structured 4-phase approach:
 
-## Development Guidelines
+1. **Phase 1: Foundation** - LlamaIndex integration setup
+2. **Phase 2: Core Integration** - Document processing pipeline
+3. **Phase 3: Document Integration** - GSH-specific analysis
+4. **Phase 4: Advanced Features** - Automation and optimization
 
-### Code Organization
-- **Keep workflow logic in `steps/` directory only**
-- **Use descriptive step names** (e.g., `analyze-document`, `process-feedback`)
-- **Follow topic naming**: `entity.action[.status]` (e.g., `document.uploaded`, `analysis.completed`)
+### Key Development Rules
+- **LlamaIndex First Priority** - Core document processing capability
+- **Neo4j Memory System** - Persistent context across sessions
+- **Agent Coordination** - Structured roles and responsibilities
+- **Healthcare Compliance** - HIPAA-compliant data handling
 
-### State Management
-- Use `traceId` for state isolation
-- Store complex data structures in Neo4j
-- Use Motia state for workflow-specific data
+## Use Cases
 
-### Error Handling
-- Always wrap handlers in try-catch blocks
-- Use structured logging with context
-- Emit error events for downstream handling
+### Primary Healthcare Applications
+- **Document Analysis** - Process GSH compliance documents
+- **Regulatory Compliance** - DHCS, OSHPD, BHCIP requirements
+- **Financial Analysis** - Budget projections and ROI calculations
+- **Risk Assessment** - Automated risk identification and mitigation
+- **Report Generation** - Executive summaries and recommendations
 
-### Testing
-- Test API endpoints with curl commands
-- Use `npx motia emit` for event step testing
-- Verify Neo4j operations with Python scripts
+### AI-Powered Workflows
+- **Context-Aware Research** - Combine internal docs with external sources
+- **Automated Documentation** - Generate compliance reports
+- **Knowledge Graph Queries** - Natural language database interaction
+- **Multi-Modal Processing** - Handle various document formats
 
-## Environment Setup
+## Configuration & Environment
 
 ### Required Environment Variables
 ```bash
-LLAMACLOUD_API_KEY=your_api_key_here
-OPENAI_API_KEY=your_openai_key_here
+# LlamaCloud Configuration
+LLAMACLOUD_API_KEY=your-api-key
+LLAMACLOUD_PROJECT_NAME=gsh-analysis
+OPENAI_API_KEY=your-openai-key
+
+# Neo4j Configuration
 NEO4J_URL=bolt://localhost:7687
 NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=password
+
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost/gsh_db
 ```
 
-### Dependencies
-- Node.js 18+ for Motia
-- Python 3.12+ for AI/graph operations
-- Docker for Neo4j
-- UV for Python package management
+### Docker Services
+- **Neo4j** - Graph database with APOC plugin
+- **MCP Memory Service** - AI memory management
 
-## Troubleshooting
+## Testing & Quality Assurance
 
-### Common Issues
-1. **Neo4j Connection Failed**: Check Docker container status
-2. **Type Errors**: Run `npm run generate-types`
-3. **API Endpoint 404**: Verify step configuration and restart dev server
-4. **State Not Persisting**: Check traceId usage and state adapter
+### Test Structure
+- **Integration Tests** - MCP server connectivity
+- **Unit Tests** - Individual component validation
+- **End-to-End Tests** - Complete workflow validation
 
-### Debug Commands
+### Quality Metrics
+- **Memory System Validation** - Cross-tool synchronization
+- **LlamaIndex Integration** - Document processing accuracy
+- **Performance Monitoring** - Response times and throughput
+
+## Deployment & Operations
+
+### Local Development
 ```bash
-# Check Neo4j logs
-docker-compose logs neo4j
+# Start Neo4j database
+docker-compose up -d
 
-# Verify Motia step registration
-npm run dev:debug
+# Install dependencies
+npm install
+pip install -r requirements.txt
 
-# Test database connection
+# Run development server
+npm run dev
+```
+
+### Production Considerations
+- **Healthcare Compliance** - HIPAA data handling requirements
+- **Security** - API key management and data encryption
+- **Scalability** - Load balancing and performance optimization
+- **Monitoring** - Error tracking and performance metrics
+
+## Integration Points
+
+### External APIs
+- **LlamaCloud** - Document parsing and indexing
+- **OpenAI** - Language model processing
+- **Neo4j Aura** - Cloud graph database management
+
+### Data Sources
+- **GSH Documents** - Healthcare compliance and planning documents
+- **Web Research** - External regulatory and industry information
+- **Knowledge Graphs** - Structured relationship data
+
+## Success Criteria
+
+### Technical Milestones
+- **LlamaIndex Integration** - Full document processing capability
+- **Memory System** - Persistent AI context across sessions
+- **Document Processing** - GSH-specific analysis workflows
+- **Workflow Automation** - End-to-end process automation
+
+### Business Outcomes
+- **Compliance Efficiency** - Faster regulatory document processing
+- **Risk Reduction** - Automated risk identification
+- **Decision Support** - AI-powered insights and recommendations
+- **Cost Optimization** - Improved resource allocation
+
+## Future Roadmap
+
+### Planned Enhancements
+- **Advanced Analytics** - Predictive modeling capabilities
+- **Multi-Language Support** - International compliance requirements
+- **Real-Time Processing** - Live document analysis
+- **Enhanced Security** - Advanced data protection measures
+
+---
+
+## Quick Start Commands
+
+```bash
+# Project setup
+git clone <repository>
+cd bhsme-motia
+
+# Environment setup
+cp .env.example .env
+# Edit .env with your API keys
+
+# Start services
+docker-compose up -d
+npm install
+pip install -r requirements.txt
+
+# Development mode
+npm run dev
+
+# Verify connections
 python verify_neo4j_connection.py
 ```
 
-## Current Project Focus
+## Support & Documentation
 
-The repository is currently focused on integrating LlamaCloud with the existing Motia codebase for intelligent GSH project analysis. Key deliverables include:
+- **Tasks Directory** - Implementation guides and progress tracking
+- **Workshop Materials** - GraphRAG examples and tutorials
+- **MCP Documentation** - AI-database integration guides
+- **Rules.md** - Development guidelines and standards
 
-1. Document processing and analysis workflows
-2. Code-document correlation systems
-3. Integration gap identification
-4. Automated workflow optimization
+---
 
-Refer to `tasks/` directory for detailed implementation guides and progress tracking.
+*This documentation is maintained as part of the GSH Healthcare Intelligence Platform project. For updates and modifications, please refer to the project repository and task management system.*
