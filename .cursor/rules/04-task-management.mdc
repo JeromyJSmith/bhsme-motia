@@ -1,11 +1,6 @@
----
-description: "Task management and agent coordination guidelines"
-alwaysApply: false
----
-
 # Task Management & Agent Coordination
 
-## 📋 Project Task System
+## 📋 GSH LlamaIndex Integration Task System
 
 ### Task Documentation Structure
 
@@ -20,35 +15,35 @@ All tasks must follow the established structure in [tasks/](mdc:tasks/):
 
 **All agents must follow this structured approach:**
 
-#### Phase 1: Foundation Setup (Day 1-2)
+#### Phase 1: LlamaIndex Integration (IMMEDIATE PRIORITY)
 
 - **Priority**: 🔴 Critical
-- **Focus**: LlamaCloud integration and codebase upload
+- **Focus**: LlamaIndex connection and document access
 - **Key Deliverables**:
-  - API key configuration
-  - Codebase upload to LlamaCloud (318KB repomix-output.md)
-  - Basic query functionality
-  - Environment setup validation
+  - LlamaIndex API key configuration
+  - Access to massive GSH document index
+  - Basic query functionality for documents/spreadsheets/plans
+  - Integration with existing Motia workflow
 
-#### Phase 2: Core Integration (Day 3-5)
+#### Phase 2: Memory System Setup (Day 3-5)
 
 - **Priority**: 🟠 High
-- **Focus**: API development and code analysis
+- **Focus**: Neo4j persistent memory implementation
 - **Key Deliverables**:
-  - `analyze-existing-code.step.ts` implementation
-  - `codebase-aware-research.step.ts` development
-  - Integration with existing Motia workflow
-  - GSH-specific analysis capabilities
+  - Neo4j MCP server configuration
+  - Cross-tool memory synchronization
+  - Entity/relationship mapping for GSH datasets
+  - Task completion memory updates
 
-#### Phase 3: Document Integration (Day 6-8)
+#### Phase 3: Document Processing (Day 6-8)
 
 - **Priority**: 🟡 Medium
-- **Focus**: GSH document processing
+- **Focus**: GSH document analysis and correlation
 - **Key Deliverables**:
   - [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) processing pipeline
   - Code-document correlation system
-  - Implementation gap identification
   - Healthcare compliance validation
+  - Implementation gap identification
 
 #### Phase 4: Advanced Features (Day 9-12)
 
@@ -62,117 +57,85 @@ All tasks must follow the established structure in [tasks/](mdc:tasks/):
 
 ## 🤖 Agent Coordination Rules
 
-### Agent Roles & Responsibilities
+### Core Agent Roles
 
 ```typescript
-interface AgentRoles {
+interface GSHAgentRoles {
     PlanningArchitect: "System planning, architecture, and roadmap";
-    DataLayerAgent: "Data hooks, React Query, and subscriptions"; // "Roo"
-    UIRenderer: "UI scaffolding and component mapping";
+    MemoryManager: "Neo4j memory system and cross-tool synchronization";
+    DocumentProcessor: "LlamaIndex integration and GSH document analysis";
     TaskTracker: "Task progress, ticketing, and status updates";
-    RuleKeeper: "Enforces rules, code quality, and test coverage";
+    RuleKeeper: "Enforces rules, code quality, and compliance";
 }
 ```
 
-### Data Layer Delegation (Roo)
+### Memory System Protocol
 
-**CRITICAL**: When data access or synchronization is required, defer to the
-DataLayerAgent (Roo):
-
-```typescript
-// ✅ Always defer to DataLayerAgent for data operations
-const dataRequest = {
-    operation: "define_query_hooks",
-    context: "GSH document analysis",
-    requirements: {
-        queryKeys: ["gsh-documents", documentId],
-        realTimeSubscriptions: ["document.updated", "analysis.completed"],
-        optimisticUpdates: true,
-    },
-};
-// -> Forward to DataLayerAgent (Roo)
-```
-
-### Agent Communication Protocol
+**CRITICAL**: After every task completion, update Neo4j memory:
 
 ```typescript
-interface AgentTask {
-    id: string;
-    assignedTo: AgentRoles;
+interface TaskMemoryUpdate {
+    taskId: string;
     phase: 1 | 2 | 3 | 4;
-    priority: "critical" | "high" | "medium" | "low";
-    dependencies: string[];
-    deliverables: string[];
-    deadline: string;
-    contextPayload: Record<string, any>;
+    completedAt: string;
+    outcomes: string[];
+    decisions: string[];
+    context: {
+        documentsProcessed: string[];
+        codeChanges: string[];
+        integrationPoints: string[];
+        nextSteps: string[];
+    };
+    relationships: {
+        relatedDocuments: string[];
+        codeComponents: string[];
+        requirements: string[];
+    };
 }
+```
 
-// Example agent task assignment
-const codeAnalysisTask: AgentTask = {
-    id: "analyze-existing-codebase",
-    assignedTo: "PlanningArchitect",
-    phase: 2,
-    priority: "high",
-    dependencies: ["llamacloud-setup-complete"],
-    deliverables: ["analyze-existing-code.step.ts", "integration-report.md"],
-    deadline: "Day 5",
-    contextPayload: {
-        codebaseFile: "repomix-output.md",
-        focusAreas: ["motia-integration", "neo4j-connectivity"],
-    },
-};
+### Cross-Tool Synchronization
+
+**MANDATORY**: Ensure all agents have access to previous decisions:
+
+```typescript
+interface CrossToolSync {
+    beforeTask: "Query Neo4j for previous context";
+    duringTask: "Update memory with intermediate decisions";
+    afterTask: "Store complete task outcomes and relationships";
+    crossSession: "Maintain context between coding sessions";
+}
 ```
 
 ## 📊 Progress Tracking Requirements
 
-### Daily Task Updates
+### Daily Memory Updates
 
 ```typescript
-interface DailyProgress {
+interface DailyMemoryUpdate {
     date: string;
     phase: number;
-    tasksCompleted: string[];
-    tasksInProgress: string[];
-    blockers: Array<{
-        issue: string;
-        severity: "low" | "medium" | "high" | "critical";
-        assignedTo?: string;
-        estimatedResolution: string;
-    }>;
-    nextDayPlan: string[];
+    tasksCompleted: TaskMemoryUpdate[];
+    contextPreserved: boolean;
+    crossToolSync: boolean;
+    knowledgeGraph: {
+        entitiesAdded: string[];
+        relationshipsCreated: string[];
+        documentsCorrelated: string[];
+    };
 }
-
-// Update tasks/TASK_TRACKER.md daily
-const updateProgress = async (progress: DailyProgress) => {
-    await updateTaskFile("tasks/TASK_TRACKER.md", progress);
-    await notifyStakeholders(progress);
-};
 ```
 
-### Success Metrics Tracking
+### LlamaIndex Integration Metrics
 
 ```typescript
-interface PhaseMetrics {
-    phase1: {
-        llamaCloudConnected: boolean;
-        codebaseUploaded: boolean;
-        basicQueriesWorking: boolean;
-    };
-    phase2: {
-        apiEndpointsFunctional: boolean;
-        codeAnalysisInsights: boolean;
-        integrationRecommendations: boolean;
-    };
-    phase3: {
-        gshDocumentsProcessed: boolean;
-        codeDocumentCorrelation: boolean;
-        implementationGapsIdentified: boolean;
-    };
-    phase4: {
-        workflowAutomated: boolean;
-        performanceOptimized: boolean;
-        errorHandlingRobust: boolean;
-    };
+interface LlamaIndexMetrics {
+    documentsAccessed: number;
+    spreadsheetsProcessed: number;
+    plansAnalyzed: number;
+    contextQualityScore: number;
+    integrationHealth: boolean;
+    queryResponseTime: number;
 }
 ```
 
@@ -180,206 +143,138 @@ interface PhaseMetrics {
 
 ### Task Handoff Protocol
 
+**CRITICAL**: Include memory context in all handoffs:
+
 ```typescript
-interface TaskHandoff {
+interface GSHTaskHandoff {
     fromAgent: string;
     toAgent: string;
     taskId: string;
-    completedDeliverables: string[];
+    memoryContext: {
+        previousDecisions: string[];
+        documentContext: string[];
+        codebaseState: string[];
+        integrationStatus: string[];
+    };
     nextSteps: string[];
-    contextTransfer: {
-        codeChanges: string[];
-        configUpdates: string[];
-        testResults: string[];
-        knownIssues: string[];
+    persistentMemory: {
+        neo4jUpdated: boolean;
+        contextPreserved: boolean;
+        relationshipsMapped: boolean;
     };
 }
-
-// Example: DataLayerAgent (Roo) to UIRenderer handoff
-const dataToUIHandoff: TaskHandoff = {
-    fromAgent: "DataLayerAgent",
-    toAgent: "UIRenderer",
-    taskId: "gsh-dashboard-data-hooks",
-    completedDeliverables: [
-        "useGSHDocuments hook",
-        "useAnalysisResults hook",
-        "real-time subscriptions",
-    ],
-    nextSteps: [
-        "Implement dashboard components",
-        "Connect hooks to UI components",
-        "Add loading and error states",
-    ],
-    contextTransfer: {
-        codeChanges: ["services/gsh-data.service.ts"],
-        configUpdates: ["query key definitions"],
-        testResults: ["all hooks tests passing"],
-        knownIssues: ["rate limiting on LlamaCloud queries"],
-    },
-};
 ```
 
 ### Parallel Task Execution
 
-```typescript
-// Execute independent tasks in parallel
-const parallelTasks = [
-    { agent: "PlanningArchitect", task: "design-api-architecture" },
-    { agent: "DataLayerAgent", task: "define-query-strategies" },
-    { agent: "RuleKeeper", task: "setup-testing-framework" },
-];
+Focus on GSH-specific parallel tasks:
 
-// Sequential tasks with dependencies
-const sequentialTasks = [
-    { agent: "PlanningArchitect", task: "complete-api-design" },
-    {
-        agent: "UIRenderer",
-        task: "implement-endpoints",
-        dependencies: ["complete-api-design"],
-    },
-    {
-        agent: "TaskTracker",
-        task: "validate-integration",
-        dependencies: ["implement-endpoints"],
-    },
+```typescript
+const gshParallelTasks = [
+    { agent: "PlanningArchitect", task: "design-llamaindex-integration" },
+    { agent: "MemoryManager", task: "setup-neo4j-memory-system" },
+    { agent: "DocumentProcessor", task: "analyze-gsh-document-index" },
 ];
 ```
 
 ## 📋 Quality Assurance
 
-### Code Review Requirements
-
-**CRITICAL**: All code implementation must first query CONTEXT7 MCP tool for
-latest documentation. See
-[CONTEXT7 Documentation Rule](mdc:.cursor/rules/05-context7-documentation.mdc)
-for mandatory requirements.
+### Memory System Validation
 
 ```typescript
-interface CodeReviewChecklist {
-    documentation: {
-        context7Queried: boolean;
-        latestPatternsVerified: boolean;
-        currentExamplesUsed: boolean;
-    };
-    architecture: {
-        followsMotiaPatterns: boolean;
-        integrationPointsClear: boolean;
-        securityMeasuresImplemented: boolean;
-    };
-    implementation: {
-        typeScriptStandards: boolean;
-        errorHandlingComplete: boolean;
-        testCoverageAdequate: boolean;
-    };
-    compliance: {
-        hipaaCompliant: boolean;
-        auditLoggingPresent: boolean;
-        phiHandlingSafe: boolean;
-    };
-    integration: {
-        llamaCloudIntegration: boolean;
-        neo4jIntegration: boolean;
-        motiaWorkflowIntegration: boolean;
-    };
+interface MemorySystemChecklist {
+    crossToolSync: boolean;
+    contextPreservation: boolean;
+    entityMapping: boolean;
+    relationshipTracking: boolean;
+    taskMemoryUpdates: boolean;
+    knowledgeGraphIntegrity: boolean;
 }
 ```
 
-### Task Completion Validation
+### LlamaIndex Integration Validation
 
 ```typescript
-const validateTaskCompletion = async (taskId: string): Promise<boolean> => {
-    const task = await getTask(taskId);
-
-    // Verify all deliverables exist
-    const deliverablesExist = await Promise.all(
-        task.deliverables.map((deliverable) => fileExists(deliverable)),
-    );
-
-    // Run integration tests
-    const testsPass = await runIntegrationTests(task.testSuite);
-
-    // Check security compliance
-    const securityCompliant = await validateSecurityCompliance(task);
-
-    return deliverablesExist.every(Boolean) && testsPass && securityCompliant;
-};
+interface LlamaIndexIntegrationChecklist {
+    documentAccess: boolean;
+    spreadsheetProcessing: boolean;
+    planAnalysis: boolean;
+    contextQuality: boolean;
+    queryPerformance: boolean;
+    complianceValidation: boolean;
+}
 ```
 
 ## 🚨 Escalation Procedures
 
-### Blocker Resolution
+### Memory System Issues
 
 ```typescript
-interface BlockerEscalation {
-    severity: "low" | "medium" | "high" | "critical";
-    escalationPath: {
-        low: "Continue with alternative approach";
-        medium: "Notify TaskTracker, adjust timeline";
-        high: "Escalate to PlanningArchitect, reassign resources";
-        critical: "Stop all work, emergency team meeting";
-    };
-    timeToEscalate: {
-        low: "24 hours";
-        medium: "8 hours";
-        high: "2 hours";
-        critical: "Immediate";
-    };
+interface MemoryEscalation {
+    crossToolDesync: "CRITICAL - Stop all work, fix synchronization";
+    contextLoss: "HIGH - Restore from last known good state";
+    relationshipCorruption: "MEDIUM - Rebuild affected relationships";
+    performanceDegradation: "LOW - Optimize queries and indexes";
 }
 ```
 
-### Agent Communication Channels
+### LlamaIndex Issues
 
 ```typescript
-const communicationProtocol = {
-    // Daily standups: Progress updates and blocker identification
-    dailyStandups: "Update tasks/TASK_TRACKER.md",
-
-    // Urgent issues: Immediate attention required
-    urgentChannel: "Direct agent mention with @AgentName",
-
-    // Documentation: All decisions and context
-    documentation: "Update relevant .mdc rules and task files",
-
-    // Code reviews: Quality assurance
-    codeReview: "Create PR with assigned reviewers",
-
-    // Task handoffs: Context transfer between agents
-    handoffs: "Use TaskHandoff interface for complete context transfer",
-};
+interface LlamaIndexEscalation {
+    documentAccessFailure: "CRITICAL - Cannot proceed without document context";
+    queryPerformanceIssues: "HIGH - Impacts development velocity";
+    contextQualityProblems: "MEDIUM - May lead to incorrect implementations";
+    integrationErrors: "LOW - Workaround while investigating";
+}
 ```
 
 ## 🎯 Success Criteria
 
 ### Phase Completion Gates
 
-Each phase requires **explicit approval** before proceeding:
+Each phase requires:
 
-1. **All deliverables completed** and validated
-2. **Success metrics achieved** as defined in task specifications
-3. **Quality assurance** checks passed
-4. **Security compliance** verified
-5. **Documentation updated** in task tracking system
+1. **Memory System Updated**: Neo4j contains all task outcomes and relationships
+2. **Cross-Tool Sync**: All agents have access to current context
+3. **Document Context**: LlamaIndex integration provides required context
+4. **Compliance Validated**: Healthcare and security requirements met
+5. **Quality Assured**: Code meets project standards
 
 ### Project Success Definition
 
 ```typescript
-const projectSuccess = {
-    technical: {
-        llamaCloudFullyIntegrated: true,
-        gshDocumentsProcessed: true,
-        codebaseAnalysisComplete: true,
-        workflowsAutomated: true,
+const gshProjectSuccess = {
+    llamaIndexIntegration: {
+        documentAccessComplete: true,
+        spreadsheetProcessingWorking: true,
+        planAnalysisOperational: true,
+        contextQualityHigh: true,
     },
-    compliance: {
-        hipaaCompliant: true,
-        securityAuditPassed: true,
-        dataHandlingSafe: true,
+    memorySystem: {
+        crossToolSyncActive: true,
+        contextPreservationWorking: true,
+        entityMappingComplete: true,
+        relationshipTrackingActive: true,
+    },
+    gshDocumentProcessing: {
+        allDocsAnalyzed: true,
+        codeDocumentCorrelation: true,
+        complianceValidated: true,
+        implementationGapsIdentified: true,
     },
     deliverables: {
-        allTasksCompleted: true,
-        documentationComplete: true,
-        testCoverageAdequate: true,
+        workflowAutomation: true,
         productionReady: true,
+        documentationComplete: true,
+        memorySystemOperational: true,
     },
 };
+```
+
+    },
+
+};
+
+```
 ```

@@ -43,6 +43,9 @@ curl -X POST https://api.cloud.llamaindex.ai/v1/files \
 # Add to your .env file
 echo "LLAMACLOUD_API_KEY=your_api_key_here" >> .env
 echo "OPENAI_API_KEY=your_openai_key_here" >> .env
+echo "LLAMACLOUD_IP=52.5.178.213" >> .env
+echo "LLAMACLOUD_WHITELIST_ENABLED=true" >> .env
+echo "NETWORK_SECURITY_LEVEL=hipaa_compliant" >> .env
 ```
 
 ### Step 4: Install Dependencies (5 minutes)
@@ -106,7 +109,25 @@ export const handler = async (req: Request) => {
 };
 ```
 
-### Step 6: Test Your Implementation (5 minutes)
+### Step 6: Configure Network Security (5 minutes)
+
+```bash
+# CRITICAL: Whitelist LlamaCloud IP for secure access
+# Add to your firewall/security group rules:
+# IP: 52.5.178.213
+# Port: 443 (HTTPS)
+# Protocol: TCP
+
+# Test connectivity to LlamaCloud
+ping -c 3 52.5.178.213
+curl -I https://52.5.178.213 --connect-timeout 10
+```
+
+See
+[LlamaCloud Network Security Rule](../.cursor/rules/06-llamacloud-network-security.mdc)
+for detailed configuration.
+
+### Step 7: Test Your Implementation (5 minutes)
 
 ```bash
 # Start your development server

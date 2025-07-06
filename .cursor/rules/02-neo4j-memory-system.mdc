@@ -1,0 +1,115 @@
+---
+alwaysApply: true
+description: "Neo4j memory system for cross-tool synchronization"
+---
+
+# Neo4j Memory System - Cross-Tool Synchronization
+
+## 🧠 Persistent Memory Purpose
+
+**Neo4j Integration Purpose**: Maintain persistent memory between different
+coding tools so all agents stay synchronized.
+
+## 🔄 Memory System Functions
+
+### Core Responsibilities
+
+- **Entity Mapping**: Track relationships between GSH documents, code
+  components, and requirements
+- **Context Continuity**: Ensure all tools have access to previous decisions and
+  context
+- **Task Memory**: Regular memory updates after every task completion
+- **Knowledge Graph**: Build comprehensive understanding of project
+  relationships
+- **Tool Synchronization**: Keep all agents on the same page across sessions
+
+## 📋 Memory Update Protocol
+
+### After Every Task - MANDATORY
+
+Update Neo4j memory with task outcomes using the MCP Neo4j servers in
+[mcp-neo4j/](mdc:mcp-neo4j/):
+
+#### Task Memory Structure
+
+```typescript
+interface TaskMemoryUpdate {
+    taskId: string;
+    phase: 1 | 2 | 3 | 4;
+    completedAt: string;
+    outcomes: string[];
+    decisions: string[];
+    context: {
+        documentsProcessed: string[];
+        codeChanges: string[];
+        integrationPoints: string[];
+        nextSteps: string[];
+    };
+    relationships: {
+        relatedDocuments: string[];
+        codeComponents: string[];
+        requirements: string[];
+    };
+}
+```
+
+### Cross-Tool Synchronization - MANDATORY
+
+```typescript
+interface CrossToolSync {
+    beforeTask: "Query Neo4j for previous context";
+    duringTask: "Update memory with intermediate decisions";
+    afterTask: "Store complete task outcomes and relationships";
+    crossSession: "Maintain context between coding sessions";
+}
+```
+
+## 🔧 Implementation Requirements
+
+### Neo4j MCP Server Integration
+
+- Use [mcp-neo4j/servers/](mcp:mcp-neo4j/servers/) for memory operations
+- Configure connection via [docker-compose.yml](mdc:docker-compose.yml)
+- Implement memory hooks in [main.py](mdc:main.py)
+
+### Memory Operations
+
+1. **Before Task**: Query Neo4j for previous context and decisions
+2. **During Task**: Update memory with intermediate decisions and context
+3. **After Task**: Store complete task outcomes and relationships
+4. **Cross Session**: Maintain context between different coding sessions
+
+## 🎯 Success Criteria
+
+- ✅ Neo4j MCP servers operational
+- ✅ Cross-tool synchronization active
+- ✅ Context preservation working
+- ✅ Entity mapping complete
+- ✅ Relationship tracking active
+- ✅ Task memory updates functioning
+- ✅ Knowledge graph integrity maintained
+
+## 🚨 Memory System Validation
+
+### Critical Checks
+
+```typescript
+interface MemorySystemChecklist {
+    crossToolSync: boolean;
+    contextPreservation: boolean;
+    entityMapping: boolean;
+    relationshipTracking: boolean;
+    taskMemoryUpdates: boolean;
+    knowledgeGraphIntegrity: boolean;
+}
+```
+
+### Escalation Procedures
+
+- **Cross-Tool Desync**: CRITICAL - Stop all work, fix synchronization
+- **Context Loss**: HIGH - Restore from last known good state
+- **Relationship Corruption**: MEDIUM - Rebuild affected relationships
+- **Performance Degradation**: LOW - Optimize queries and indexes
+
+**Remember**: The memory system is separate from client/project data and focuses
+on maintaining context between different coding tools and sessions.

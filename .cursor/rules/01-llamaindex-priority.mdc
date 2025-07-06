@@ -1,0 +1,57 @@
+---
+alwaysApply: true
+description: "LlamaIndex integration priority and requirements"
+---
+
+# LlamaIndex Integration - IMMEDIATE PRIORITY
+
+## 🔴 Critical Priority Rule
+
+**IMMEDIATE PRIORITY**: Implement LlamaIndex integration before any other work.
+
+## 📋 LlamaIndex Integration Requirements
+
+### Primary Objective
+
+- **Access massive GSH document index** containing documents, spreadsheets, and
+  plans
+- **Use LlamaIndex context** for all development decisions
+- **Query LlamaIndex** for project requirements and specifications
+
+### Implementation Steps
+
+1. **API Configuration**
+   - Configure LlamaIndex API key in [main.py](mdc:main.py)
+   - Set up connection to GSH document index
+   - Validate access to documents, spreadsheets, and plans
+
+2. **Integration with Motia**
+   - Create LlamaIndex query steps in [steps/](mdc:steps/) directory
+   - Implement document query functionality
+   - Connect to existing workflow in [main.py](mdc:main.py)
+
+3. **Document Access Validation**
+   - Verify access to [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) equivalent in
+     LlamaIndex
+   - Test query performance and context quality
+   - Ensure HIPAA-compliant data access
+
+## 🎯 Success Criteria
+
+- ✅ LlamaIndex API connection established
+- ✅ Document index access confirmed
+- ✅ Query functionality operational
+- ✅ Context quality validated
+- ✅ Integration with Motia complete
+
+## 📊 Context Usage
+
+All agents must query LlamaIndex for:
+
+- Project requirements and specifications
+- GSH document context and details
+- Healthcare compliance guidelines
+- Implementation guidance and examples
+
+**Before implementing ANY code**, agents must use LlamaIndex to understand the
+full context of the GSH project requirements.

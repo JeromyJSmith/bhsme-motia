@@ -69,6 +69,10 @@
     },
     "run-llama Docs": {
       "url": "https://gitmcp.io///github.com/run-llama/llama_cloud_services"
+    },
+    "rule-reviewer": {
+      "command": "/usr/local/bin/rule-reviewer-mcp",
+      "args": []
     }
   }
 }

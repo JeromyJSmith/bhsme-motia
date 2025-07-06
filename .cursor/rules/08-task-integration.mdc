@@ -1,0 +1,132 @@
+---
+alwaysApply: true
+description: "Task integration and project workflow management"
+---
+
+# Task Integration - GSH Project Workflow
+
+## 📋 Task Management Integration
+
+### Primary Task Documentation
+
+Reference the existing task system in [tasks/](mdc:tasks/):
+
+- **Main Specification**:
+  [tasks/llamacloud-motia-integration.md](mdc:tasks/llamacloud-motia-integration.md)
+- **Progress Tracking**: [tasks/TASK_TRACKER.md](mdc:tasks/TASK_TRACKER.md)
+- **Quick Start Guide**:
+  [tasks/QUICK_START_GUIDE.md](mdc:tasks/QUICK_START_GUIDE.md)
+
+### Implementation Priority Order
+
+#### 🔴 Phase 1: LlamaIndex Integration (IMMEDIATE)
+
+- **Priority**: CRITICAL - Must complete before any other work
+- **Focus**: Connect to massive GSH document index
+- **Deliverables**: API access, document queries, context validation
+- **Memory Update**: Store LlamaIndex integration outcomes in Neo4j
+
+#### 🟠 Phase 2: Memory System Setup (Days 3-5)
+
+- **Priority**: HIGH - Enable cross-tool synchronization
+- **Focus**: Neo4j persistent memory implementation
+- **Deliverables**: Memory system operational, cross-tool sync active
+- **Memory Update**: Establish persistent memory infrastructure
+
+#### 🟡 Phase 3: Document Processing (Days 6-8)
+
+- **Priority**: MEDIUM - Process GSH healthcare documents
+- **Focus**: [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) analysis
+- **Deliverables**: Document correlation, compliance validation
+- **Memory Update**: Store document analysis relationships
+
+#### 🟢 Phase 4: Advanced Features (Days 9-12)
+
+- **Priority**: LOW - Automation and optimization
+- **Focus**: Workflow automation, performance optimization
+- **Deliverables**: Production-ready system
+- **Memory Update**: Store optimization outcomes and configurations
+
+## 🔄 Workflow Integration Requirements
+
+### Before Every Task
+
+1. **Query Neo4j** for previous context and decisions
+2. **Query LlamaIndex** for relevant document context
+3. **Check CONTEXT7** for latest implementation patterns
+4. **Review task specifications** in [tasks/](mdc:tasks/)
+
+### During Task Execution
+
+1. **Update Neo4j memory** with intermediate decisions
+2. **Maintain cross-tool synchronization** with other agents
+3. **Follow GSH-specific patterns** from development standards
+4. **Ensure healthcare compliance** for all operations
+
+### After Task Completion
+
+1. **Update Neo4j memory** with complete outcomes and relationships
+2. **Update task tracker** in [tasks/TASK_TRACKER.md](mdc:tasks/TASK_TRACKER.md)
+3. **Document decisions** and context for future reference
+4. **Verify cross-tool sync** is maintained
+
+## 📊 Progress Validation
+
+### Daily Requirements
+
+Update [tasks/TASK_TRACKER.md](mdc:tasks/TASK_TRACKER.md) with:
+
+- LlamaIndex integration status
+- Neo4j memory system health
+- Cross-tool synchronization status
+- Phase completion progress
+- Healthcare compliance validation
+
+### Success Validation
+
+Each phase must meet these criteria before proceeding:
+
+- ✅ **Memory Updated**: Neo4j contains all task outcomes
+- ✅ **Cross-Tool Sync**: All agents have current context
+- ✅ **LlamaIndex Context**: Document context validated
+- ✅ **Compliance**: Healthcare requirements met
+- ✅ **Integration**: Motia workflow integration confirmed
+
+## 🎯 Integration Success Criteria
+
+### Technical Integration
+
+- **LlamaIndex**: Full access to GSH document index operational
+- **Neo4j Memory**: Persistent cross-tool synchronization active
+- **Motia Workflow**: GSH-specific steps implemented in [steps/](mdc:steps/)
+- **Documentation**: All outcomes tracked in [tasks/](mdc:tasks/)
+
+### Healthcare Integration
+
+- **HIPAA Compliance**: All data handling compliant
+- **Document Processing**: GSH documents analyzed and correlated
+- **Security**: Healthcare data security measures implemented
+- **Audit Trail**: Complete audit logging operational
+
+## 🚨 Integration Issues
+
+### Escalation Matrix
+
+- **LlamaIndex Failure**: CRITICAL - Cannot proceed without document context
+- **Memory Sync Loss**: CRITICAL - Restore cross-tool synchronization
+  immediately
+- **Compliance Violation**: HIGH - Address healthcare compliance immediately
+- **Task Blocker**: MEDIUM - Use task tracker for coordination
+- **Performance Issues**: LOW - Optimize while maintaining functionality
+
+### Resolution Protocol
+
+1. **Identify Issue**: Document in
+   [tasks/TASK_TRACKER.md](mdc:tasks/TASK_TRACKER.md)
+2. **Check Memory**: Query Neo4j for context and previous decisions
+3. **Consult LlamaIndex**: Get document context for issue resolution
+4. **Update Status**: Maintain transparency in task tracking
+5. **Preserve Context**: Ensure memory system maintains issue resolution context
+
+**Integration Goal**: Seamless GSH healthcare document analysis system with
+persistent memory across all coding tools.

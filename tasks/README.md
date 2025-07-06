@@ -63,7 +63,7 @@ tasks/
 
 **Purpose**: Get started immediately with Phase 1
 
-- 7-step implementation (47 minutes total)
+- 8-step implementation (52 minutes total)
 - Ready-to-use commands
 - Troubleshooting guide
 - Today's success criteria

@@ -1,0 +1,187 @@
+---
+globs: "*.ts,*.tsx,*.js,*.jsx"
+description: "Development standards for GSH TypeScript implementation"
+---
+
+# Development Standards - GSH Project
+
+## 🔧 GSH-Specific Development Requirements
+
+### CONTEXT7 Documentation - MANDATORY
+
+**Before implementing ANY code**:
+
+1. Query CONTEXT7 MCP tool for latest documentation patterns
+2. Use current examples, never outdated training data
+3. Verify patterns match Motia framework requirements
+
+Reference:
+[CONTEXT7 Documentation Rule](mdc:.cursor/rules/05-context7-documentation.mdc)
+
+### Healthcare Compliance - CRITICAL
+
+- **HIPAA Compliance**: Ensure all data handling meets healthcare standards
+- **Security Measures**: Implement proper security for healthcare data
+- **Audit Logging**: Include audit trails for all healthcare data operations
+- **PHI Handling**: Safe handling of Protected Health Information
+
+### LlamaIndex Integration Standards
+
+```typescript
+// ✅ Always query LlamaIndex for context before implementation
+interface LlamaIndexQuery {
+    context: string;
+    documentQuery: string;
+    compliance: "HIPAA" | "Healthcare";
+    purpose: "GSH-integration" | "document-analysis";
+}
+
+// Example implementation
+const queryLlamaIndex = async (query: LlamaIndexQuery) => {
+    // Implementation must use LlamaIndex context
+    const context = await llamaIndexClient.query(query);
+    return context;
+};
+```
+
+### Neo4j Memory Integration
+
+```typescript
+// ✅ Always update Neo4j memory after significant operations
+interface MemoryUpdate {
+    operation: string;
+    outcomes: string[];
+    relationships: Record<string, string[]>;
+    nextSteps: string[];
+}
+
+// Example memory update
+const updateTaskMemory = async (taskId: string, update: MemoryUpdate) => {
+    await neo4jMemoryClient.updateTask(taskId, update);
+};
+```
+
+## 📁 File Organization Standards
+
+### Motia Step Files
+
+Location: [steps/](mdc:steps/)
+
+```typescript
+// Template for new GSH steps
+import { EventConfig, Handlers } from "motia";
+import { z } from "zod";
+
+export const config: EventConfig = {
+    type: "event",
+    name: "GSH[FeatureName]",
+    description: "GSH-specific feature implementation",
+    subscribes: ["gsh.event"],
+    emits: ["gsh.result"],
+    input: z.object({
+        // GSH-specific input schema
+    }),
+    flows: ["gsh-workflow"],
+};
+
+export const handler: Handlers["GSH[FeatureName]"] = async (
+    input,
+    { logger, emit, state, traceId },
+) => {
+    // 1. Query LlamaIndex for context
+    // 2. Query Neo4j for previous context
+    // 3. Implement feature
+    // 4. Update Neo4j memory
+    // 5. Emit results
+};
+```
+
+### Main Integration Point
+
+Location: [main.py](mdc:main.py)
+
+- Configure LlamaIndex API connections
+- Set up Neo4j memory client
+- Initialize GSH-specific workflows
+
+## 🧪 Testing Standards
+
+### Unit Tests
+
+- Test LlamaIndex integration queries
+- Test Neo4j memory operations
+- Test healthcare compliance validation
+- Test Motia step functionality
+
+### Integration Tests
+
+- End-to-end GSH document processing
+- Cross-tool memory synchronization
+- LlamaIndex to Motia workflow integration
+- Healthcare compliance validation
+
+## 📊 Performance Standards
+
+### LlamaIndex Queries
+
+- Response time < 5 seconds for document queries
+- Context quality validation required
+- Error handling for API failures
+
+### Neo4j Memory Operations
+
+- Memory updates must complete < 1 second
+- Cross-tool sync within 2 seconds
+- Relationship integrity maintained
+
+## 🚨 Error Handling Standards
+
+### LlamaIndex Errors
+
+```typescript
+try {
+    const context = await llamaIndexClient.query(query);
+} catch (error) {
+    logger.error("LlamaIndex query failed", { error, query });
+    // Fallback to cached context or graceful degradation
+    throw new GSHIntegrationError("Document context unavailable");
+}
+```
+
+### Neo4j Memory Errors
+
+```typescript
+try {
+    await neo4jMemoryClient.updateTask(taskId, update);
+} catch (error) {
+    logger.error("Memory update failed", { error, taskId });
+    // Critical: Memory sync failure requires immediate attention
+    throw new MemorySyncError("Cross-tool synchronization failed");
+}
+```
+
+## 📋 Code Review Checklist
+
+### Pre-Implementation
+
+- [ ] CONTEXT7 documentation queried
+- [ ] LlamaIndex context obtained
+- [ ] Neo4j memory context checked
+- [ ] Healthcare compliance considered
+
+### Implementation
+
+- [ ] GSH-specific patterns followed
+- [ ] Motia framework integration correct
+- [ ] Error handling comprehensive
+- [ ] Memory updates included
+
+### Post-Implementation
+
+- [ ] Neo4j memory updated with outcomes
+- [ ] Cross-tool synchronization verified
+- [ ] Healthcare compliance validated
+- [ ] Performance benchmarks met
+
+**Remember**: All code must support the GSH healthcare mission with proper
+LlamaIndex integration and Neo4j memory synchronization.

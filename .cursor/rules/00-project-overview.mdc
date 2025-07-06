@@ -1,14 +1,10 @@
----
-alwaysApply: true
----
-
 # GSH LlamaCloud + Motia Integration Project Overview
 
 ## 🎯 Project Mission
 
-This project integrates **LlamaCloud** with **Motia** to create an intelligent
+This project integrates **LlamaIndex** with **Motia** to create an intelligent
 **GSH (Good Samaritan Hospital)** behavioral health document analysis and
-workflow automation system.
+workflow automation system with persistent memory across all coding tools.
 
 ## 🏥 Healthcare Context
 
@@ -19,14 +15,33 @@ workflow automation system.
 
 ## 🏗️ Core Architecture Stack
 
+- **Primary Integration**: [LlamaIndex](https://cloud.llamaindex.ai) - **FIRST
+  PRIORITY**
+  - Massive index of GSH documents, spreadsheets, and plans
+  - Primary context source for all development decisions
 - **Workflow Engine**: [Motia](https://www.motia.dev) - Event-driven TypeScript
   framework
-- **AI/Document Processing**: [LlamaCloud](https://cloud.llamaindex.ai) -
-  Enterprise document analysis
-- **Graph Database**: [Neo4j](mdc:docker-compose.yml) with MCP integration
+- **Persistent Memory**: [Neo4j](mdc:docker-compose.yml) with MCP integration
+  - **Purpose**: Cross-tool memory and context sharing
+  - **Function**: Entity/relationship mapping within datasets
+  - **Scope**: Separate from client/project data
 - **Task Management**: [Task system](mdc:tasks/README.md) with 4-phase
   implementation
 - **Containerization**: Docker for Neo4j and MCP servers
+
+## 🧠 Persistent Memory System
+
+**Neo4j Integration Purpose**: Maintain persistent memory between different
+coding tools so all agents stay synchronized:
+
+- **Entity Mapping**: Track relationships between GSH documents, code
+  components, and requirements
+- **Context Continuity**: Ensure all tools have access to previous decisions and
+  context
+- **Task Memory**: Regular memory updates after every task completion
+- **Knowledge Graph**: Build comprehensive understanding of project
+  relationships
+- **Tool Synchronization**: Keep all agents on the same page across sessions
 
 ## 📋 Current Project Status
 
@@ -34,30 +49,47 @@ workflow automation system.
   (318KB)
 - ✅ **Task documentation**: Comprehensive 4-phase plan in [tasks/](mdc:tasks/)
 - ✅ **Infrastructure setup**: Neo4j, MCP servers, Docker configuration
-- 🔄 **Phase 1 Ready**: Foundation setup for LlamaCloud integration
+- 🔄 **Phase 1 Ready**: **LlamaIndex integration** - IMMEDIATE PRIORITY
 
-## 🎯 Primary Objectives
+## 🎯 Primary Objectives (Priority Order)
 
-1. **Document Intelligence**: Process GSH behavioral health documents using
-   LlamaCloud
-2. **Code-Document Correlation**: Link existing codebase with project
+1. **LlamaIndex Integration**: **FIRST PRIORITY** - Access massive index of GSH
+   documents, spreadsheets, and plans
+2. **Persistent Memory**: Implement Neo4j-based memory system for cross-tool
+   synchronization
+3. **Document Intelligence**: Process GSH behavioral health documents using
+   LlamaIndex
+4. **Code-Document Correlation**: Link existing codebase with project
    requirements
-3. **Workflow Automation**: Create Motia-powered analysis and reporting
+5. **Workflow Automation**: Create Motia-powered analysis and reporting
    workflows
-4. **Knowledge Management**: Store insights in Neo4j graph database
-5. **Gap Analysis**: Identify implementation gaps and generate recommendations
 
 ## 📊 Key Success Metrics
 
-- Integration of 318KB codebase with LlamaCloud indexing
-- Processing of [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) healthcare
-  documents
-- Automated workflow generation for document analysis
-- Real-time insights and recommendation system
+- **LlamaIndex Integration**: Full access to GSH document index
+- **Memory System**: Persistent context across all coding tools
+- **Document Processing**: Analysis of
+  [ALL-GOOD-SAM-DOCS/](mdc:ALL-GOOD-SAM-DOCS/) healthcare documents
+- **Code Integration**: 318KB codebase correlation with requirements
+- **Workflow Generation**: Automated analysis and reporting workflows
 
 ## 🚀 Development Approach
 
 All agents and developers must follow these **CRITICAL requirements**:
+
+### **MANDATORY: LlamaIndex First**
+
+- **IMMEDIATE PRIORITY**: Implement LlamaIndex integration before any other work
+- Access the massive index of GSH documents, spreadsheets, and plans
+- Use LlamaIndex context for all development decisions
+- Query LlamaIndex for project requirements and specifications
+
+### **MANDATORY: Memory System Updates**
+
+- **After Every Task**: Update Neo4j memory with task outcomes and context
+- **Cross-Tool Sync**: Ensure all agents can access previous decisions
+- **Relationship Mapping**: Track entities and relationships within datasets
+- **Context Preservation**: Maintain persistent memory between coding sessions
 
 ### **MANDATORY: CONTEXT7 Documentation Check**
 
@@ -67,13 +99,23 @@ All agents and developers must follow these **CRITICAL requirements**:
 - See
   [CONTEXT7 Documentation Rule](mdc:.cursor/rules/05-context7-documentation.mdc)
 
+### **MANDATORY: LlamaCloud Network Security**
+
+- Configure network access rules to whitelist LlamaCloud IP: **52.5.178.213**
+- Ensure HIPAA-compliant data transmission for GSH healthcare documents
+- See
+  [LlamaCloud Network Security Rule](mdc:.cursor/rules/06-llamacloud-network-security.mdc)
+
 ### **4-Phase Implementation Plan**:
 
-- **Phase 1**: Foundation Setup (LlamaCloud integration)
-- **Phase 2**: Core Integration (API development)
-- **Phase 3**: Document Integration (GSH docs processing)
-- **Phase 4**: Advanced Features (automation & optimization)
+- **Phase 1**: **LlamaIndex Integration** (IMMEDIATE PRIORITY)
+- **Phase 2**: **Memory System Setup** (Neo4j persistent memory)
+- **Phase 3**: **Document Processing** (GSH docs analysis)
+- **Phase 4**: **Advanced Features** (automation & optimization)
 
 Reference
+[tasks/llamacloud-motia-integration.md](mdc:tasks/llamacloud-motia-integration.md)
+for detailed specifications.
+
 [tasks/llamacloud-motia-integration.md](mdc:tasks/llamacloud-motia-integration.md)
 for detailed specifications.

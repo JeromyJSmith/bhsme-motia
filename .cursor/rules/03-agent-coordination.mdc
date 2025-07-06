@@ -1,0 +1,108 @@
+---
+alwaysApply: true
+description: "Agent coordination and role definitions for GSH project"
+---
+
+# Agent Coordination - GSH Project
+
+## 🤖 Core Agent Roles
+
+### Defined Agent Responsibilities
+
+```typescript
+interface GSHAgentRoles {
+    PlanningArchitect: "System planning, architecture, and roadmap";
+    MemoryManager: "Neo4j memory system and cross-tool synchronization";
+    DocumentProcessor: "LlamaIndex integration and GSH document analysis";
+    TaskTracker: "Task progress, ticketing, and status updates";
+    RuleKeeper: "Enforces rules, code quality, and compliance";
+}
+```
+
+## 📋 Agent Communication Protocol
+
+### Task Handoff Requirements
+
+**CRITICAL**: Include memory context in all handoffs:
+
+```typescript
+interface GSHTaskHandoff {
+    fromAgent: string;
+    toAgent: string;
+    taskId: string;
+    memoryContext: {
+        previousDecisions: string[];
+        documentContext: string[];
+        codebaseState: string[];
+        integrationStatus: string[];
+    };
+    nextSteps: string[];
+    persistentMemory: {
+        neo4jUpdated: boolean;
+        contextPreserved: boolean;
+        relationshipsMapped: boolean;
+    };
+}
+```
+
+### Communication Requirements
+
+1. **Query Neo4j** for previous context before starting tasks
+2. **Include memory context** in all task handoffs
+3. **Update persistent memory** after task completion
+4. **Maintain cross-tool synchronization** at all times
+
+## 🔄 Parallel Task Execution
+
+Focus on GSH-specific parallel tasks:
+
+```typescript
+const gshParallelTasks = [
+    { agent: "PlanningArchitect", task: "design-llamaindex-integration" },
+    { agent: "MemoryManager", task: "setup-neo4j-memory-system" },
+    { agent: "DocumentProcessor", task: "analyze-gsh-document-index" },
+];
+```
+
+## 📊 Task Management Integration
+
+### Phase-Based Coordination
+
+- **Phase 1**: LlamaIndex Integration (IMMEDIATE PRIORITY)
+- **Phase 2**: Memory System Setup (Neo4j persistent memory)
+- **Phase 3**: Document Processing (GSH docs analysis)
+- **Phase 4**: Advanced Features (automation & optimization)
+
+Reference
+[tasks/llamacloud-motia-integration.md](mdc:tasks/llamacloud-motia-integration.md)
+for detailed specifications.
+
+### Daily Progress Updates
+
+Update [tasks/TASK_TRACKER.md](mdc:tasks/TASK_TRACKER.md) with:
+
+- Memory system status
+- Cross-tool synchronization health
+- LlamaIndex integration progress
+- Task completion and handoffs
+
+## 🎯 Coordination Success Criteria
+
+- ✅ All agents have access to Neo4j memory context
+- ✅ Task handoffs include complete memory context
+- ✅ Cross-tool synchronization active
+- ✅ Phase-based progression maintained
+- ✅ Memory updates after every task
+- ✅ Agent role clarity maintained
+
+## 🚨 Coordination Issues
+
+### Escalation Procedures
+
+- **Agent Confusion**: HIGH - Clarify roles and responsibilities immediately
+- **Context Loss**: CRITICAL - Restore memory context from Neo4j
+- **Task Conflict**: MEDIUM - Use task tracker for coordination
+- **Role Overlap**: LOW - Reference role definitions and adjust
+
+**Remember**: All agents must work together toward the GSH/LlamaIndex
+integration goal with persistent memory synchronization.
